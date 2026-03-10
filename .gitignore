@@ -1,0 +1,37 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+server/dist/
+dashboard/.next/
+dashboard/out/
+
+# Database
+server/data/*.db*
+*.db
+*.db-wal
+*.db-shm
+
+# Environment
+.env
+
+# Runtime config (generated from .example)
+agents.json
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Python
+memcp/.venv/
+memcp/__pycache__/
+memcp/src/memcp/__pycache__/
+*.pyc
+~/.memcp/
+
+# Generated docs
+docs/*.pptx
+docs/gen-ppt.js
+
+# Misc
+template.html

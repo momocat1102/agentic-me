@@ -1,0 +1,46 @@
+{
+  "hooks": {
+    "PreCompact": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 hooks/pre_compact_save.py"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "mcp__memcp__memcp_remember",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 hooks/reset_counter.py"
+          }
+        ]
+      },
+      {
+        "matcher": "mcp__memcp__memcp_load_context",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 hooks/reset_counter.py"
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 hooks/auto_save_reminder.py"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,8 @@
+services:
+  memcp:
+    build: .
+    stdin_open: true
+    volumes:
+      - ~/.memcp:/data
+    environment:
+      MEMCP_DATA_DIR: /data

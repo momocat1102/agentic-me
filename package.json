@@ -1,0 +1,28 @@
+{
+  "name": "agentic-me",
+  "version": "1.0.0",
+  "description": "A personal AI agent system built on Claude Code",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/user/agentic-me.git"
+  },
+  "license": "MIT",
+  "workspaces": [
+    "server",
+    "dashboard"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm run dev -w server\" \"npm run dev -w dashboard\"",
+    "dev:server": "npm run dev -w server",
+    "dev:dashboard": "npm run dev -w dashboard",
+    "build": "npm run build -w server && npm run build -w dashboard"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.27.1",
+    "playwright": "^1.58.2"
+  }
+}

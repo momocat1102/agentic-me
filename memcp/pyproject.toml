@@ -1,0 +1,67 @@
+[build-system]
+requires = ["hatchling", "hatch-fancy-pypi-readme"]
+build-backend = "hatchling.build"
+
+[project]
+name = "claude-memory-mcp"
+description = "Persistent memory MCP server for Claude Code — never lose context again"
+dynamic = ["readme", "version"]
+license = "MIT"
+requires-python = ">=3.10"
+dependencies = ["mcp>=1.0.0,<2.0.0", "pydantic>=2.0.0,<3.0.0"]
+
+[project.optional-dependencies]
+search = ["bm25s>=0.2.0"]
+fuzzy = ["rapidfuzz>=3.0"]
+semantic = ["model2vec>=0.4.0", "numpy>=1.24.0"]
+semantic-hq = ["fastembed>=0.5.0", "numpy>=1.24.0"]
+vectors = ["sqlite-vec>=0.1.0"]
+hnsw = ["usearch>=2.0", "numpy>=1.24.0"]
+async = ["aiosqlite>=0.20"]
+cache = ["diskcache>=5.6.0"]
+ner = ["spacy>=3.7"]
+llm = ["httpx>=0.27.0"]
+dev = ["pytest>=8.0", "pytest-asyncio>=0.24", "ruff>=0.1.0", "pre-commit>=3.0"]
+benchmark = ["pytest-benchmark>=4.0", "tabulate>=0.9"]
+all = ["memcp[search,fuzzy,semantic,vectors,hnsw,async,cache,ner,llm,dev,benchmark]"]
+
+[project.urls]
+Homepage = "https://github.com/maydali28/memcp"
+Documentation = "https://github.com/maydali28/memcp#readme"
+Changelog = "https://github.com/maydali28/memcp/blob/main/CHANGELOG.md"
+Issues = "https://github.com/maydali28/memcp/issues"
+
+[project.scripts]
+memcp = "memcp.server:main"
+
+[tool.hatch.metadata.hooks.fancy-pypi-readme]
+content-type = "text/markdown"
+
+[[tool.hatch.metadata.hooks.fancy-pypi-readme.fragments]]
+path = "README.md"
+
+[[tool.hatch.metadata.hooks.fancy-pypi-readme.fragments]]
+text = "\n---\n\n"
+
+[[tool.hatch.metadata.hooks.fancy-pypi-readme.fragments]]
+path = "CHANGELOG.md"
+
+[tool.hatch.version]
+path = "src/memcp/__init__.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/memcp"]
+
+[tool.ruff]
+target-version = "py310"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B", "SIM"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+# Run unit tests only:    pytest tests/unit/
+# Run benchmarks only:    pytest tests/benchmark/ --benchmark-only
+# Run everything:         pytest tests/
