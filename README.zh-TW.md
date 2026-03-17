@@ -225,6 +225,10 @@ agentic-me/
 - [Recharts](https://github.com/recharts/recharts) — React 圖表元件庫
 - [Three.js](https://github.com/mrdoob/three.js) — 3D 視覺化
 
+### Skills 與工作流靈感
+- [Everything Claude Code](https://github.com/affaan-m/everything-claude-code) — Claude Code skills 精選集與最佳實踐
+- [Superpowers](https://github.com/obra/superpowers) — Claude Code skill 增強工作流套件
+
 ### Pixel Office 素材
 - [Neko Cafe Asset Pack](https://hellorumin.itch.io/neko-cafe-asset-pack) by HelloRumin — 磁磚、傢俱與貓咪 Sprite
 - [Animated Pixel Kittens](https://last-tick.itch.io/animated-pixel-kittens-cats-32x32) by Last Tick — 寵物貓動畫

@@ -226,6 +226,14 @@ This project is built with and inspired by these amazing open-source projects an
 - [Recharts](https://github.com/recharts/recharts) — Chart library for React
 - [Three.js](https://github.com/mrdoob/three.js) — 3D visualization
 
+### Skills & Workflow Inspiration
+- [Everything Claude Code](https://github.com/affaan-m/everything-claude-code) — Curated collection of Claude Code skills and best practices
+- [Superpowers](https://github.com/obra/superpowers) — Claude Code skill library for enhanced workflows
+
+### Skills & Workflow Inspiration
+- [Everything Claude Code](https://github.com/affaan-m/everything-claude-code) — Curated collection of Claude Code skills and best practices
+- [Superpowers](https://github.com/obra/superpowers) — Claude Code skill library for enhanced workflows
+
 ### Pixel Office Assets
 - [Neko Cafe Asset Pack](https://hellorumin.itch.io/neko-cafe-asset-pack) by HelloRumin — Tileset, furniture & cat sprites
 - [Animated Pixel Kittens](https://last-tick.itch.io/animated-pixel-kittens-cats-32x32) by Last Tick — Pet cat animations
