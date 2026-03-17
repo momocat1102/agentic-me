@@ -42,4 +42,4 @@ Total: X changes synced to Dashboard
 ```
 
 If the server is not running, inform the user:
-"Server not reachable. Start it with: `cd /mnt/d/WorkSpace/system-agent && npm run dev:server`"
+"Server not reachable. Navigate to the system-agent directory (the agentic-me install directory that contains `agents.json` and `server/`) and run: `npm run dev:server`"

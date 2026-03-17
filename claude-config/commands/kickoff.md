@@ -50,8 +50,11 @@ After user confirms:
 
 ### 3.1 Create Project Folder
 
+Detect the workspace root by taking the parent directory of the current working directory (i.e., the directory that contains the current project). Store it as `WORKSPACE_DIR`.
+
 ```bash
-PROJECT_DIR="/mnt/d/WorkSpace/<project-id>"
+WORKSPACE_DIR="$(dirname "$(pwd)")"
+PROJECT_DIR="$WORKSPACE_DIR/<project-id>"
 mkdir -p "$PROJECT_DIR"
 ```
 
@@ -160,14 +163,16 @@ Add the new project to `agents.json` so it appears in Pixel Office and activity 
 #   "id": "<project-id>",
 #   "name": "<Project Name>",
 #   "role": "<one-line role description>",
-#   "path": "/mnt/d/WorkSpace/<project-id>"
+#   "path": "$PROJECT_DIR"
 # }
 ```
 
-Edit `/mnt/d/WorkSpace/system-agent/agents.json` — add a new entry to the `agents` array with the project info. Then restart the CC server to load the new agent:
+Detect the agentic-me system-agent directory by locating `agents.json` — it lives in the `system-agent` project, which is a sibling of the current project under the same workspace root. Its path is `$WORKSPACE_DIR/system-agent` (where `WORKSPACE_DIR` was determined in Step 3.1).
+
+Edit `$WORKSPACE_DIR/system-agent/agents.json` — add a new entry to the `agents` array with the project info. Then restart the CC server to load the new agent:
 
 ```bash
-bash /mnt/d/WorkSpace/system-agent/restart.sh
+bash "$WORKSPACE_DIR/system-agent/restart.sh"
 ```
 
 ### 3.6 Set Deadlines (if any)
@@ -181,9 +186,9 @@ Use `memcp_remember` to store the project roadmap summary, scope=project, import
 ## Step 4: Inform the User
 
 Tell the user:
-- Project folder created: `/mnt/d/WorkSpace/<project-id>/`
+- Project folder created: `$PROJECT_DIR/`
 - CLAUDE.md generated
 - Registered with Central Command (N milestones)
 - Deadlines set (if any)
 - The new project is now visible on the Dashboard
-- **Next step**: Open `/mnt/d/WorkSpace/<project-id>/` in VS Code and run `/standup` to start working
+- **Next step**: Open `$PROJECT_DIR/` in VS Code and run `/standup` to start working

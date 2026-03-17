@@ -8,7 +8,7 @@ Determine project ID in this priority order:
 
 1. If `$ARGUMENTS` has a value, use it as the project ID
 2. Read the current directory's CLAUDE.md, look for `report_task_completion(project="..."` to extract the project ID
-3. Extract the last segment of the current working directory path (e.g., `/mnt/d/WorkSpace/system-agent/` → `system-agent`)
+3. Extract the last segment of the current working directory path (e.g., `/path/to/your-project/` → `your-project`)
 4. If all fail, use `curl -s http://localhost:4000/api/projects` to list all projects and let the user choose
 
 ### 1.2 Fetch Data
@@ -17,8 +17,8 @@ Determine project ID in this priority order:
 curl -s http://localhost:4000/api/projects/<PROJECT_ID>/summary
 ```
 
-If the server doesn't respond, inform the user to start it:
-`cd /mnt/d/WorkSpace/system-agent && npm run dev:server`
+If the server doesn't respond, inform the user to start it by navigating to the system-agent directory (the agentic-me install directory that contains `agents.json` and `server/`) and running:
+`npm run dev:server`
 
 If the project doesn't exist (404), inform the user and suggest `/kickoff` to create a new project.
 

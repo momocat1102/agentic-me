@@ -59,6 +59,7 @@ An extension for [Claude Code](https://github.com/anthropics/claude-code) that t
 - Node.js >= 22
 - Python 3.11+ (for memcp)
 - Claude Code (`npm install -g @anthropic-ai/claude-code`)
+- tmux (for running server & dashboard in background)
 
 ### One-Click Setup
 

@@ -5,7 +5,7 @@ You are reviewing the results of completed night shift runs. Your job is to fetc
 Determine which project to focus on, in this priority order:
 1. If `$ARGUMENTS` is provided, use it as a schedule name filter or schedule ID
 2. Otherwise, auto-detect from the current working directory:
-   - Extract the folder name from the current working directory (e.g., `/mnt/d/WorkSpace/master-thesis` → `master-thesis`)
+   - Extract the folder name from the current working directory (e.g., `/path/to/your-project` → `your-project`)
    - Also check if there's a CLAUDE.md in the current directory — look for "Central Command Project ID:" to get the project ID
    - This project ID will be used to filter schedules by their `projectId` field
 

@@ -19,8 +19,8 @@ curl -s http://localhost:4000/api/deadlines
 curl -s http://localhost:4000/api/agents
 ```
 
-If the server doesn't respond, inform the user how to start it:
-`cd /mnt/d/WorkSpace/system-agent && npm run dev:server`
+If the server doesn't respond, inform the user how to start it by navigating to the system-agent directory (the agentic-me install directory that contains `agents.json` and `server/`) and running:
+`npm run dev:server`
 
 ## Step 2: Morning Brief
 

@@ -58,6 +58,7 @@
 - Node.js >= 22
 - Python 3.11+（memcp 需要）
 - Claude Code（`npm install -g @anthropic-ai/claude-code`）
+- tmux（用於背景執行 server 與 dashboard）
 
 ### 一鍵安裝
 
