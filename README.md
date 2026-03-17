@@ -163,6 +163,8 @@ This project is built with and inspired by these amazing open-source projects an
 - [Claude Code](https://github.com/anthropics/claude-code) — AI coding agent by Anthropic
 - [Model Context Protocol (MCP)](https://github.com/modelcontextprotocol/sdk) — Protocol for AI tool integration
 - [memcp](https://github.com/anthropics/memcp) — Persistent memory system for Claude Code
+- [OpenSpec](https://github.com/Fission-AI/OpenSpec) — Structured change management workflow for Claude Code
+- [OpenClaw](https://github.com/danleetw/OpenClaw-bot-review) — Claude Code skill & hook ecosystem
 
 ### Backend
 - [Hono](https://github.com/honojs/hono) — Lightweight web framework
