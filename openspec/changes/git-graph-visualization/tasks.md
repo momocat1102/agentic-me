@@ -1,0 +1,6 @@
+- [x] GitGraph.tsx SVG component (trunk + branches + merge lines)
+- [x] ChangeTree.tsx rewrite to SVG git graph style
+- [x] Integrate GitGraph into projects/[id]/page.tsx
+- [x] Demo project with test data
+- [ ] Fine-tune visual spacing and responsive behavior
+- [ ] Consider drag-and-drop reordering

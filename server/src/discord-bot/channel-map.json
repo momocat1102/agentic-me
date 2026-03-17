@@ -1,0 +1,9 @@
+{
+  "1482462371136929946": { "project": "main-agent", "name": "#一般" },
+  "1482467265915125850": { "project": "system-agent", "name": "#system-agent" },
+  "1482467278833320047": { "project": "master-thesis", "name": "#master-thesis" },
+  "1482467286290927739": { "project": "macs-coder", "name": "#macs-coder" },
+  "1482467293576433940": { "project": "foxconn-report", "name": "#foxconn-report" },
+  "1482467301403136011": { "project": "lab-weekly", "name": "#lab-weekly" },
+  "1482467307136614507": { "project": "demo-project", "name": "#demo-project" }
+}

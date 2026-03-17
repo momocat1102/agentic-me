@@ -1,0 +1,73 @@
+{
+  "agents": [
+    {
+      "id": "main-agent",
+      "name": "Main Agent",
+      "role": "Central coordinator, understands user intent and dispatches tasks",
+      "path": "$WORKSPACE_DIR/main-agent",
+      "isOrchestrator": true
+    },
+    {
+      "id": "research-agent",
+      "name": "Research Agent",
+      "role": "Deep search: papers, technology surveys, information gathering",
+      "path": "$WORKSPACE_DIR/research-agent"
+    },
+    {
+      "id": "code-agent",
+      "name": "Code Agent",
+      "role": "Code development: experiments, platform building, tool creation",
+      "path": "$WORKSPACE_DIR/code-agent"
+    },
+    {
+      "id": "system-agent",
+      "name": "System Agent",
+      "role": "Agentic Me system management",
+      "path": "$WORKSPACE_DIR/system-agent"
+    }
+  ],
+  "experts": [
+    {
+      "id": "ai-engineer",
+      "name": "AI Engineer",
+      "description": "AI/ML model training, inference optimization",
+      "icon": "cpu"
+    },
+    {
+      "id": "research",
+      "name": "Researcher",
+      "description": "Literature search, evidence synthesis, academic writing",
+      "icon": "search"
+    },
+    {
+      "id": "web-dev",
+      "name": "Full-stack Developer",
+      "description": "React/Next.js, Node.js, databases, DevOps",
+      "icon": "globe"
+    },
+    {
+      "id": "ppt",
+      "name": "Presentation Expert",
+      "description": "Slide design, templates, PptxGenJS",
+      "icon": "presentation"
+    },
+    {
+      "id": "debug",
+      "name": "Debug Expert",
+      "description": "Systematic diagnosis, error analysis",
+      "icon": "bug"
+    },
+    {
+      "id": "code-review",
+      "name": "Code Review",
+      "description": "Quality assessment, security review, performance analysis",
+      "icon": "shield-check"
+    },
+    {
+      "id": "data-analysis",
+      "name": "Data Analyst",
+      "description": "Pandas/NumPy, statistical analysis, visualization",
+      "icon": "bar-chart"
+    }
+  ]
+}

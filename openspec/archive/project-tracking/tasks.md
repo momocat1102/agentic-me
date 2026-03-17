@@ -1,0 +1,8 @@
+- [x] Projects CRUD API + summary endpoint
+- [x] Projects Dashboard (list + detail pages)
+- [x] Progress tracking API (parent-child hierarchy)
+- [x] Expert mode system (8 expert files + /switch)
+- [x] 10 subagent definitions (~/.claude/agents/)
+- [x] Custom commands (kickoff, progress, review, done, overview)
+- [x] Deadline management API + Dashboard
+- [x] Startup hook: CC 最近活動注入

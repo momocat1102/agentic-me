@@ -1,0 +1,5 @@
+- [ ] Audit all hook scripts in ~/.claude/hooks/
+- [ ] Fix PreCompact knowledge extraction reliability
+- [ ] Tune stop hook reminder frequency
+- [ ] Document each hook's purpose and trigger conditions
+- [ ] Performance test: ensure hooks don't block response

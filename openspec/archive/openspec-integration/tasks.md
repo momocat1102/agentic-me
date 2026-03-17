@@ -1,0 +1,22 @@
+# OpenSpec Integration — Implementation Tasks
+
+- [x] Create /opsx:onboard command (rename from init-spec)
+- [x] Create /opsx:propose command
+- [x] Create /opsx:ff command
+- [x] Create /opsx:apply command
+- [x] Create /opsx:verify command
+- [x] Create /opsx:archive command
+- [x] Create /opsx:sync command
+- [x] Add parseProposalStatus helper to projects.ts
+- [x] Add PUT /:id/specs/changes/:name/status API
+- [x] Add POST /:id/specs/changes API
+- [x] Add ChangeTree.tsx component
+- [x] Update project detail page with ChangeTree layout
+- [x] Update /done command with Step 1.5
+- [x] Update /standup command with Active Changes
+- [x] Update /progress command with spec-linked markers
+- [x] Update /kickoff command with OpenSpec workflow
+- [x] Update AGENTS.md template with command reference
+- [x] Update global CLAUDE.md with OpenSpec section
+- [ ] End-to-end testing with real project
+- [ ] Verify Dashboard renders correctly

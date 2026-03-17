@@ -1,0 +1,11 @@
+- [x] Night Shift DB schema (schedules + schedule_runs)
+- [x] shift-executor.ts (iterative rounds + curl reporting)
+- [x] shift-scheduler.ts (node-cron)
+- [x] /night-shift command
+- [x] Dashboard /schedules page (CRUD + launch + stop)
+- [x] Iterative Task/Review mode (feedback injection)
+- [x] Circuit Breaker (consecutive_failures + auto-disable)
+- [x] Usage service (JSONL token parsing)
+- [x] Usage Dashboard (summary cards + charts + session list)
+- [x] launch-night-shift.sh (tmux automation)
+- [x] Agent behavior constraints (Honesty Protocol)

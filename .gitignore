@@ -1,0 +1,52 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+server/dist/
+dashboard/.next/
+dashboard/out/
+.next/
+
+# Database
+server/data/*.db*
+server/*.db*
+*.db
+*.db-wal
+*.db-shm
+
+# Environment
+.env
+
+# Runtime config (generated from .example)
+agents.json
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Python
+__pycache__/
+*.pyc
+
+# Generated docs
+docs/*.pptx
+docs/gen-ppt.js
+
+# Misc
+template.html
+template.pptx
+ppt-gen-aiia.zip
+pixel-office-layout-*.json
+*.png
+
+# Claude Code (private config)
+.claude/
+
+# Pixel Office source assets (raw sprites/zips)
+dashboard/source/
+
+# TypeScript build info
+*.tsbuildinfo
+
+# Shell scripts (local use)
+rebuild-dashboard.sh

@@ -1,0 +1,23 @@
+{
+  "name": "central-command",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "server",
+    "dashboard"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm run dev -w server\" \"npm run dev -w dashboard\"",
+    "dev:server": "npm run dev -w server",
+    "dev:dashboard": "npm run dev -w dashboard",
+    "dev:slash-bot": "npm run dev:slash-bot -w server",
+    "build": "npm run build -w server && npm run build -w dashboard"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.27.1",
+    "playwright": "^1.58.2"
+  }
+}

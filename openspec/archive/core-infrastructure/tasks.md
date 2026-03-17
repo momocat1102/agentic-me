@@ -1,0 +1,7 @@
+- [x] Hono server + SQLite schema + WAL mode
+- [x] Next.js Dashboard scaffolding + Tailwind
+- [x] Agent registration API + agents.json
+- [x] MCP Server (report_task_completion, update_progress)
+- [x] WebSocket broadcaster for real-time updates
+- [x] Graceful shutdown (SIGTERM handler + WAL checkpoint)
+- [x] tmux management scripts (start/stop/restart)
