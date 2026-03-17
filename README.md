@@ -155,6 +155,33 @@ agentic-me/
 
 ---
 
+## Acknowledgments
+
+This project is built with and inspired by these amazing open-source projects and assets:
+
+### Core Infrastructure
+- [Claude Code](https://github.com/anthropics/claude-code) — AI coding agent by Anthropic
+- [Model Context Protocol (MCP)](https://github.com/modelcontextprotocol/sdk) — Protocol for AI tool integration
+- [memcp](https://github.com/anthropics/memcp) — Persistent memory system for Claude Code
+
+### Backend
+- [Hono](https://github.com/honojs/hono) — Lightweight web framework
+- [better-sqlite3](https://github.com/WiseLibs/better-sqlite3) — Fast SQLite3 driver for Node.js
+- [discord.js](https://github.com/discordjs/discord.js) — Discord bot framework
+
+### Frontend
+- [Next.js](https://github.com/vercel/next.js) — React framework
+- [Tailwind CSS](https://github.com/tailwindlabs/tailwindcss) — Utility-first CSS framework
+- [Sigma.js](https://github.com/jacomyal/sigma.js) + [Graphology](https://github.com/graphology/graphology) — Graph visualization
+- [Recharts](https://github.com/recharts/recharts) — Chart library for React
+- [Three.js](https://github.com/mrdoob/three.js) — 3D visualization
+
+### Pixel Office Assets
+- [Neko Cafe Asset Pack](https://hellorumin.itch.io/neko-cafe-asset-pack) by HelloRumin — Tileset, furniture & cat sprites
+- [Animated Pixel Kittens](https://last-tick.itch.io/animated-pixel-kittens-cats-32x32) by Last Tick — Pet cat animations
+
+---
+
 ## License
 
 MIT
