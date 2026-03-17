@@ -35,6 +35,11 @@ A multi-agent orchestration system built on Claude Code. Manage, monitor, and co
 - **Central Dashboard** — Real-time overview of all agents, projects, tasks, deadlines, and system health
 - **Multi-Agent Orchestration** — Register and coordinate multiple Claude Code agents, each with its own workspace and capabilities
 - **Memory System** — Integrated with [memcp](https://github.com/anthropics/memcp) for persistent memory with knowledge graph visualization
+
+<div align="center">
+  <img src="docs/memory-graph-preview.png" alt="Memory Knowledge Graph — visualizing agent memories and their connections" width="800" />
+  <p><em>Knowledge Graph — Visualizing agent memories, decisions, and their semantic connections</em></p>
+</div>
 - **Night Shift** — Automated background task scheduling for long-running agent work
 - **Discord Bot** — Remote agent control and notifications via Discord bridge
 - **PWA Support** — Install as a desktop app with offline capabilities
