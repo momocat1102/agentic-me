@@ -1,6 +1,8 @@
 # Agentic Me — Personal AI Agent Collaboration System
 
-A multi-agent orchestration system built on Claude Code. Manage, monitor, and coordinate multiple AI agents through a central dashboard with real-time status tracking, task management, and a pixel-art virtual office.
+An extension for [Claude Code](https://github.com/anthropics/claude-code) that turns it into a multi-agent collaboration system. Manage, monitor, and coordinate multiple Claude Code agents through a central dashboard with real-time status tracking, task management, and a pixel-art virtual office.
+
+> **Note:** This project currently only supports Claude Code. It is designed as a Claude Code extension ecosystem — leveraging its skills, hooks, MCP servers, and CLI capabilities to orchestrate multiple agents.
 
 <div align="center">
   <img src="docs/pixel-office-preview.png" alt="Pixel Office — AI agents working in a virtual office" width="800" />
