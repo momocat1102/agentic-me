@@ -1,6 +1,6 @@
 # Agentic Me — 個人 AI Agent 協作系統
 
-> 作者：chunyen｜最後更新：2026-03-10（Agent 行為約束升級：Circuit Breaker + Honesty Protocol）
+> 最後更新：2026-03-10（Agent 行為約束升級：Circuit Breaker + Honesty Protocol）
 
 ---
 
@@ -16,7 +16,7 @@
 
 ```
 ┌─────────────────────────────────────────────────────────────────────┐
-│                          使用者 (chunyen)                            │
+│                          使用者                            │
 │                               │                                      │
 │                    在專案資料夾中開啟 Claude Code                      │
 │                               ▼                                      │
@@ -82,7 +82,7 @@
 | `thesis` | 碩士畢業論文 | `/mnt/d/WorkSpace/thesis/` |
 | `annotation-platform` | 醫生標注平台 | `/mnt/d/WorkSpace/annotation-platform/` |
 | `weekly-meeting` | 每週教授 Meeting | （在對應專案內處理） |
-| `foxconn-report` | 鴻海實習報告 | （在對應專案內處理） |
+| `foxconn-report` | 公司報告 | （在對應專案內處理） |
 | `system-agent` | Agentic Me 系統 | `/mnt/d/WorkSpace/system-agent/` |
 
 新專案透過 `/kickoff` 建立，自動生成資料夾 + CLAUDE.md + 註冊到 CC。

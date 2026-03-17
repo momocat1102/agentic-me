@@ -27,7 +27,7 @@ function folderToProject(folderName: string): string {
   const filtered: string[] = [];
   let pastPrefix = false;
   for (const p of parts) {
-    if (!pastPrefix && ['mnt', 'd', 'WorkSpace', 'Workspace', 'home', 'chunyen', ''].includes(p)) {
+    if (!pastPrefix && ['mnt', 'd', 'WorkSpace', 'Workspace', 'home', 'users', ''].includes(p)) {
       continue;
     }
     pastPrefix = true;

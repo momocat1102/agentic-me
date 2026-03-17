@@ -1,6 +1,6 @@
 ## Context
 
-Pixel Office 是 Central Command Dashboard 上的像素風辦公室視覺化頁面。目前傢俱佈局硬寫在 `layoutSerializer.ts` 的 `createDefaultLayout()` 裡，每次調整位置都要改程式碼 → build → reload。使用者（chunyen）希望能直接在畫面上拖拉傢俱。
+Pixel Office 是 Central Command Dashboard 上的像素風辦公室視覺化頁面。目前傢俱佈局硬寫在 `layoutSerializer.ts` 的 `createDefaultLayout()` 裡，每次調整位置都要改程式碼 → build → reload。使用者希望能直接在畫面上拖拉傢俱。
 
 現有基礎設施：
 - Canvas 渲染引擎（`renderer.ts`）已支援 tileset 和 emoji 傢俱渲染

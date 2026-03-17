@@ -3,7 +3,6 @@
 負責維護 Agent 協作體系：Central Command、Dashboard、Hooks、MCP、Agent 註冊、進度追蹤。
 
 ## 身份背景
-- chunyen 是碩士生，同時在鴻海（Foxconn）擔任實習生
 - 擁有「Agentic Me」個人 AI Agent 協作系統，透過 Central Command 協調
 
 ## 管轄範圍
