@@ -167,7 +167,7 @@ agentic-me/
 - [Model Context Protocol (MCP)](https://github.com/modelcontextprotocol/sdk) — AI 工具整合協定
 - [memcp](https://github.com/anthropics/memcp) — Claude Code 的持久化記憶系統
 - [OpenSpec](https://github.com/Fission-AI/OpenSpec) — Claude Code 的結構化變更管理工作流
-- [OpenClaw](https://github.com/danleetw/OpenClaw-bot-review) — Claude Code skill & hook 生態系
+- [OpenClaw](https://github.com/danleetw/OpenClaw-bot-review) — OpenClaw 的可視化介面，用於 Claude Code
 
 ### 後端
 - [Hono](https://github.com/honojs/hono) — 輕量級 Web 框架
