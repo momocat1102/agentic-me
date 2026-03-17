@@ -38,7 +38,7 @@ An extension for [Claude Code](https://github.com/anthropics/claude-code) that t
 - **Pixel Office** — Interactive pixel-art virtual office where each agent is visualized as a cat character, with day/night cycle, furniture editor, particle effects, bug ecosystem, and Picture-in-Picture support
 - **Central Dashboard** — Real-time overview of all agents, projects, tasks, deadlines, and system health
 - **Multi-Agent Orchestration** — Register and coordinate multiple Claude Code agents, each with its own workspace and capabilities
-- **Memory System** — Integrated with [memcp](https://github.com/anthropics/memcp) for persistent memory with knowledge graph visualization
+- **Memory System** — Integrated with [memcp](https://github.com/maydali28/memcp) for persistent memory with knowledge graph visualization
 
 <div align="center">
   <img src="docs/memory-graph-preview.png" alt="Memory Knowledge Graph — visualizing agent memories and their connections" width="800" />
@@ -57,18 +57,29 @@ An extension for [Claude Code](https://github.com/anthropics/claude-code) that t
 ### Prerequisites
 
 - Node.js >= 22
-- Python 3.11+ (for memcp)
+- Python 3.11+
 - Claude Code (`npm install -g @anthropic-ai/claude-code`)
 - tmux (for running server & dashboard in background)
 
-### One-Click Setup
+### Step 1: Install memcp-pro (Persistent Memory)
+
+> **Install memcp-pro first.** It sets up the MCP server, hooks, and permissions that Agentic Me builds on.
 
 ```bash
-# Clone
+git clone https://github.com/momocat1102/memcp-pro.git
+cd memcp-pro
+bash install.sh
+```
+
+This installs [memcp](https://github.com/maydali28/memcp) with auto-loading memories, save reminders, knowledge graph, and 27 auto-approved tools. See [memcp-pro](https://github.com/momocat1102/memcp-pro) for details.
+
+### Step 2: Install Agentic Me
+
+```bash
 git clone https://github.com/momocat1102/agentic-me.git
 cd agentic-me
 
-# Run setup — installs everything (dependencies, memcp, hooks, MCP servers)
+# Run setup — installs dependencies, hooks, MCP servers
 bash scripts/setup.sh
 
 # Start (Server + Dashboard)
@@ -84,15 +95,13 @@ claude "Run bash scripts/setup.sh to set up the system, then help me configure m
 ### What the Setup Script Does
 
 1. Installs Node.js dependencies & builds the server
-2. Clones and configures [memcp](https://github.com/anthropics/memcp) — persistent memory for Claude Code
-3. Installs [OpenSpec](https://github.com/Fission-AI/OpenSpec) CLI — structured change management
-4. Configures Claude Code hooks:
-   - **SessionStart** — Auto-loads relevant memories from memcp
-   - **PreCompact** — Reminds Claude to save knowledge before context compaction
-   - **Stop** — Progressive memory reminders + progress reporting
-5. Registers MCP servers (`~/.claude/mcp.json`): memcp + central-command
-6. Sets up tool permissions (`~/.claude/settings.json`)
-7. Installs slash commands (`~/.claude/commands/`):
+2. Installs [OpenSpec](https://github.com/Fission-AI/OpenSpec) CLI — structured change management
+3. Configures Claude Code hooks:
+   - **SessionStart** — Loads recent activity from Central Command
+   - **Stop** — Progress reporting reminders
+4. Registers MCP server (`~/.claude/mcp.json`): central-command (merged alongside memcp)
+5. Sets up tool permissions (`~/.claude/settings.json`)
+6. Installs slash commands (`~/.claude/commands/`):
    - `/kickoff` — Create a new project with roadmap
    - `/standup` — Daily standup: review progress, plan work
    - `/progress` — View and update project milestones
@@ -101,21 +110,10 @@ claude "Run bash scripts/setup.sh to set up the system, then help me configure m
    - `/night-report` — Review night shift results
    - `/init-spec` — Initialize OpenSpec for a project
    - `/opsx:sync` — Sync OpenSpec changes to Dashboard
-8. Installs skills (`~/.claude/skills/`):
-   - **Memory**: memcp-save, memcp-search, memcp-session-start
+7. Installs skills (`~/.claude/skills/`):
    - **Quality**: verification-before-completion, verification-loop, debug
    - **Workflow**: subagent-driven-development, strategic-compact, search-first
    - **Planning**: brainstorming, writing-plans, when-stuck, finishing-a-development-branch
-
-### Optional: Global CLAUDE.md
-
-Copy the example config to enable memory management protocols globally:
-
-```bash
-cp claude-config/CLAUDE.md ~/.claude/CLAUDE.md
-```
-
-This teaches Claude how to use memcp effectively (smart dedup, knowledge extraction, scope selection).
 
 ### After Setup
 
@@ -211,7 +209,7 @@ This project is built with and inspired by these amazing open-source projects an
 ### Core Infrastructure
 - [Claude Code](https://github.com/anthropics/claude-code) — AI coding agent by Anthropic
 - [Model Context Protocol (MCP)](https://github.com/modelcontextprotocol/sdk) — Protocol for AI tool integration
-- [memcp](https://github.com/anthropics/memcp) — Persistent memory system for Claude Code
+- [memcp](https://github.com/maydali28/memcp) — Persistent memory system for Claude Code
 - [OpenSpec](https://github.com/Fission-AI/OpenSpec) — Structured change management workflow for Claude Code
 - [OpenClaw](https://github.com/danleetw/OpenClaw-bot-review) — Visual dashboard for OpenClaw, adapted for Claude Code
 

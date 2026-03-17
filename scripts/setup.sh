@@ -57,12 +57,12 @@ if ! command -v claude &>/dev/null; then
 fi
 ok "Claude Code $(claude --version 2>/dev/null || echo 'installed')"
 
-# Python (for memcp)
-if ! command -v python3 &>/dev/null; then
-  err "Python 3 not found. memcp requires Python 3.11+"
-  exit 1
+# Python (optional — needed for memcp, installed separately)
+if command -v python3 &>/dev/null; then
+  ok "Python $(python3 --version | cut -d' ' -f2) (needed for memcp)"
+else
+  info "Python 3 not found. Install Python 3.11+ if you plan to use memcp."
 fi
-ok "Python $(python3 --version | cut -d' ' -f2)"
 
 # ── Step 1: Install Node.js Dependencies ────────────────
 step "Step 1: Install Node.js Dependencies"
@@ -78,32 +78,13 @@ cd "$REPO_DIR/server"
 npx tsc
 ok "Server built → server/dist/"
 
-# ── Step 3: Install memcp ──────────────────────────────
-step "Step 3: Install memcp (Persistent Memory)"
+# ── Step 3: memcp (Persistent Memory) ─────────────────
+step "Step 3: memcp (Persistent Memory)"
 
-MEMCP_DIR="$CLAUDE_DIR/mcp-servers/memcp"
-
-if [ -d "$MEMCP_DIR/src" ]; then
-  ok "memcp already installed at $MEMCP_DIR"
-else
-  info "Cloning memcp..."
-  mkdir -p "$CLAUDE_DIR/mcp-servers"
-  git clone https://github.com/anthropics/memcp.git "$MEMCP_DIR" 2>/dev/null || {
-    warn "Clone failed, trying update..."
-    cd "$MEMCP_DIR" && git pull
-  }
-  ok "memcp cloned"
-fi
-
-info "Setting up memcp Python environment..."
-cd "$MEMCP_DIR"
-if [ ! -d ".venv" ]; then
-  python3 -m venv .venv
-fi
-source .venv/bin/activate
-pip install -e ".[all]" --quiet 2>/dev/null || pip install -e . --quiet
-deactivate
-ok "memcp environment ready"
+info "memcp is now installed separately."
+echo -e "  ${YELLOW}→${NC} Install memcp: ${CYAN}https://github.com/momocat1102/memcp-pro${NC}"
+echo -e "  ${YELLOW}→${NC} Run: git clone https://github.com/momocat1102/memcp-pro.git && cd memcp-pro && bash install.sh"
+echo ""
 
 # ── Step 4: Install OpenSpec CLI ────────────────────────
 step "Step 4: Install OpenSpec CLI"
@@ -136,14 +117,20 @@ mkdir -p "$CLAUDE_DIR/commands"
 info "Configuring MCP servers..."
 
 MCP_CONFIG="$CLAUDE_DIR/mcp.json"
-cat > "$MCP_CONFIG" << EOMCP
+
+# Create or merge central-command into existing mcp.json
+if [ ! -f "$MCP_CONFIG" ]; then
+  echo '{"mcpServers":{}}' > "$MCP_CONFIG"
+fi
+
+if command -v jq &>/dev/null; then
+  jq --arg cmd "node" --arg args "$REPO_DIR/server/dist/mcp-server.js" \
+    '.mcpServers["central-command"] = {"command": $cmd, "args": [$args], "env": {"CC_API_URL": "http://localhost:4000/api"}}' \
+    "$MCP_CONFIG" > "$MCP_CONFIG.tmp" && mv "$MCP_CONFIG.tmp" "$MCP_CONFIG"
+else
+  cat > "$MCP_CONFIG" << EOMCP
 {
   "mcpServers": {
-    "memcp": {
-      "command": "$MEMCP_DIR/.venv/bin/python",
-      "args": ["-m", "memcp.server"],
-      "cwd": "$MEMCP_DIR"
-    },
     "central-command": {
       "command": "node",
       "args": ["$REPO_DIR/server/dist/mcp-server.js"],
@@ -154,45 +141,19 @@ cat > "$MCP_CONFIG" << EOMCP
   }
 }
 EOMCP
+fi
 ok "MCP config → $MCP_CONFIG"
 
 # ── 5b: Hook Scripts ──
 info "Installing hook scripts..."
 
-# SessionStart hook
-cat > "$CLAUDE_DIR/hooks/memcp-session-start.sh" << 'EOHOOK'
+# SessionStart hook (Central Command only — memcp hooks are installed separately via memcp-pro)
+cat > "$CLAUDE_DIR/hooks/cc-session-start.sh" << 'EOHOOK'
 #!/usr/bin/env bash
 INPUT=$(cat)
 SOURCE=$(echo "$INPUT" | grep -o '"source":"[^"]*"' | sed 's/"source":"//;s/"//' || echo "startup")
-CWD=$(echo "$INPUT" | grep -o '"cwd":"[^"]*"' | sed 's/"cwd":"//;s/"//' || echo "")
 SOURCE="${SOURCE:-startup}"
 if [[ "$SOURCE" == "resume" ]]; then exit 0; fi
-echo "0" > /tmp/claude_session_turns
-
-DATA_DIR="${MEMCP_DATA_DIR:-$HOME/.memcp}"
-DB_PATH="$DATA_DIR/graph.db"
-PROJECT_NAME="default"
-if [[ -n "$CWD" ]]; then
-  GIT_NAME=$(cd "$CWD" 2>/dev/null && git rev-parse --show-toplevel 2>/dev/null | xargs basename 2>/dev/null || echo "")
-  if [[ -n "$GIT_NAME" ]]; then PROJECT_NAME="$GIT_NAME"; else PROJECT_NAME=$(basename "$CWD"); fi
-fi
-
-MEMORIES=""
-if [[ -s "$DB_PATH" ]]; then
-  MEMORIES=$(sqlite3 -noheader "$DB_PATH" <<EOSQL 2>/dev/null || echo ""
-SELECT '- ' || COALESCE(l0_abstract, SUBSTR(content, 1, 120)) FROM nodes
-WHERE (project = '$(echo "$PROJECT_NAME" | sed "s/'/''/g")' OR project = '_global')
-  AND importance IN ('critical', 'high')
-ORDER BY CASE importance WHEN 'critical' THEN 1 WHEN 'high' THEN 2 END, created_at DESC
-LIMIT 8;
-EOSQL
-  )
-fi
-if [[ -n "$MEMORIES" ]]; then
-  echo "=== Memory: Background knowledge loaded ==="
-  echo "$MEMORIES"
-  echo "================================"
-fi
 
 if curl -s --connect-timeout 1 http://localhost:4000/api/health > /dev/null 2>&1; then
   TASKS=$(curl -s --connect-timeout 2 "http://localhost:4000/api/tasks?limit=10" 2>/dev/null || echo "")
@@ -213,42 +174,6 @@ if curl -s --connect-timeout 1 http://localhost:4000/api/health > /dev/null 2>&1
   fi
 fi
 exit 0
-EOHOOK
-
-# PreCompact hook
-cat > "$CLAUDE_DIR/hooks/memcp-pre-compact.sh" << 'EOHOOK'
-#!/bin/bash
-INPUT=$(cat)
-cat <<'EOF'
-{"blockExecution": true, "systemMessage": "【PreCompact Knowledge Extraction】Context is about to be compacted. Before compaction:\n1. Use memcp_remember() to save important decisions, findings, preferences\n2. Use memcp_load_context() for large content blocks\n3. Unsaved content will be lost after compaction\n4. Tell the user how many knowledge items were extracted"}
-EOF
-EOHOOK
-
-# Stop hook (memcp)
-cat > "$CLAUDE_DIR/hooks/memcp-stop.sh" << 'EOHOOK'
-#!/bin/bash
-INPUT=$(cat)
-COUNTER_FILE="/tmp/claude_session_turns"
-if [ -f "$COUNTER_FILE" ]; then COUNT=$(cat "$COUNTER_FILE"); COUNT=$((COUNT + 1)); else COUNT=1; fi
-echo "$COUNT" > "$COUNTER_FILE"
-
-CONTEXT_PCT=$(echo "$INPUT" | grep -o '"context_usage_pct":[0-9]*' | grep -o '[0-9]*' || echo "0")
-if [ "${CONTEXT_PCT:-0}" -lt 55 ] 2>/dev/null; then exit 0; fi
-
-if [ "$COUNT" -ge 30 ]; then
-  echo "【Memory Reminder - URGENT】${COUNT} turns accumulated with high context usage. Please save important knowledge with memcp_remember now."
-elif [ "$COUNT" -ge 20 ]; then
-  echo "【Memory Reminder - Suggested】${COUNT} turns accumulated. Consider saving decisions and findings with memcp_remember."
-elif [ "$COUNT" -ge 10 ]; then
-  echo "【Memory Reminder】${COUNT} turns accumulated. Save noteworthy knowledge with memcp_remember."
-fi
-EOHOOK
-
-# PostToolUse hook (reset counter)
-cat > "$CLAUDE_DIR/hooks/memcp-reset-counter.sh" << 'EOHOOK'
-#!/bin/bash
-INPUT=$(cat)
-echo "0" > /tmp/claude_session_turns
 EOHOOK
 
 # Stop hook (Central Command progress)
@@ -295,30 +220,6 @@ cat > "$SETTINGS_FILE" << 'EOSETTINGS'
       "Grep",
       "WebFetch",
       "WebSearch",
-      "mcp__memcp__memcp_ping",
-      "mcp__memcp__memcp_remember",
-      "mcp__memcp__memcp_recall",
-      "mcp__memcp__memcp_forget",
-      "mcp__memcp__memcp_status",
-      "mcp__memcp__memcp_search",
-      "mcp__memcp__memcp_related",
-      "mcp__memcp__memcp_graph_stats",
-      "mcp__memcp__memcp_reinforce",
-      "mcp__memcp__memcp_consolidation_preview",
-      "mcp__memcp__memcp_consolidate",
-      "mcp__memcp__memcp_load_context",
-      "mcp__memcp__memcp_inspect_context",
-      "mcp__memcp__memcp_get_context",
-      "mcp__memcp__memcp_list_contexts",
-      "mcp__memcp__memcp_clear_context",
-      "mcp__memcp__memcp_retention_preview",
-      "mcp__memcp__memcp_retention_run",
-      "mcp__memcp__memcp_restore",
-      "mcp__memcp__memcp_projects",
-      "mcp__memcp__memcp_sessions",
-      "mcp__memcp__memcp_dedup_check",
-      "mcp__memcp__memcp_smart_remember",
-      "mcp__memcp__memcp_access_config",
       "mcp__central-command__list_agents",
       "mcp__central-command__get_task_history",
       "mcp__central-command__report_task_completion",
@@ -333,20 +234,8 @@ cat > "$SETTINGS_FILE" << 'EOSETTINGS'
         "hooks": [
           {
             "type": "command",
-            "command": "bash ~/.claude/hooks/memcp-session-start.sh",
+            "command": "bash ~/.claude/hooks/cc-session-start.sh",
             "timeout": 10000
-          }
-        ]
-      }
-    ],
-    "PreCompact": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bash ~/.claude/hooks/memcp-pre-compact.sh",
-            "timeout": 5000
           }
         ]
       }
@@ -357,25 +246,8 @@ cat > "$SETTINGS_FILE" << 'EOSETTINGS'
         "hooks": [
           {
             "type": "command",
-            "command": "bash ~/.claude/hooks/memcp-stop.sh",
-            "timeout": 5000
-          },
-          {
-            "type": "command",
             "command": "bash ~/.claude/hooks/cc-progress-stop.sh",
             "timeout": 5000
-          }
-        ]
-      }
-    ],
-    "PostToolUse": [
-      {
-        "matcher": "memcp_remember|memcp_load_context",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bash ~/.claude/hooks/memcp-reset-counter.sh",
-            "timeout": 3000
           }
         ]
       }
@@ -455,14 +327,19 @@ ${CYAN}Access:${NC}
 ${CYAN}Next steps:${NC}
   1. Edit ${YELLOW}agents.json${NC} to register your agents
   2. Create agent workspaces with CLAUDE.md in each
-  3. Start a Claude Code session — memcp will auto-load memories
+  3. ${YELLOW}Install memcp${NC} for persistent memory:
+     git clone https://github.com/momocat1102/memcp-pro.git
+     cd memcp-pro && bash install.sh
 
 ${CYAN}Installed components:${NC}
   ✓ Central Command (server + dashboard)
-  ✓ memcp (persistent memory MCP server)
   ✓ OpenSpec (change management workflow)
-  ✓ Hooks (session start, pre-compact, stop, progress)
-  ✓ MCP servers (memcp + central-command)
+  ✓ Hooks (session start, progress reminder)
+  ✓ MCP server (central-command)
   ✓ Commands (/done, /kickoff, /progress, /standup, /night-shift, etc.)
-  ✓ Skills (memcp, debug, verification, brainstorming, etc.)
+  ✓ Skills (debug, verification, brainstorming, etc.)
+
+${CYAN}Optional:${NC}
+  ○ memcp (persistent memory) — install separately from:
+    ${CYAN}https://github.com/momocat1102/memcp-pro${NC}
 "

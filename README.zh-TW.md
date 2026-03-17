@@ -36,7 +36,7 @@
 - **Pixel Office** — 互動式像素風虛擬辦公室，每個 Agent 以貓咪角色呈現，支援日夜循環、傢俱編輯器、粒子特效、蟲蟲生態系，以及子母畫面（Picture-in-Picture）
 - **中控台 Dashboard** — 即時總覽所有 Agent 狀態、專案進度、任務、截止日與系統健康度
 - **多 Agent 協調** — 註冊並協調多個 Claude Code Agent，各自擁有獨立工作區與能力
-- **記憶系統** — 整合 [memcp](https://github.com/anthropics/memcp) 持久化記憶，搭配知識圖譜視覺化
+- **記憶系統** — 整合 [memcp](https://github.com/maydali28/memcp) 持久化記憶，搭配知識圖譜視覺化
 
 <div align="center">
   <img src="docs/memory-graph-preview.png" alt="記憶知識圖譜 — 視覺化 Agent 記憶與連結" width="800" />
@@ -56,18 +56,29 @@
 ### 前置需求
 
 - Node.js >= 22
-- Python 3.11+（memcp 需要）
+- Python 3.11+
 - Claude Code（`npm install -g @anthropic-ai/claude-code`）
 - tmux（用於背景執行 server 與 dashboard）
 
-### 一鍵安裝
+### 第一步：安裝 memcp-pro（持久記憶）
+
+> **請先安裝 memcp-pro。** 它會設定 MCP server、hooks 和 permissions，Agentic Me 會在此基礎上運作。
 
 ```bash
-# 複製專案
+git clone https://github.com/momocat1102/memcp-pro.git
+cd memcp-pro
+bash install.sh
+```
+
+安裝 [memcp](https://github.com/maydali28/memcp)，包含自動載入記憶、存檔提醒、知識圖譜和 27 個自動授權工具。詳見 [memcp-pro](https://github.com/momocat1102/memcp-pro)。
+
+### 第二步：安裝 Agentic Me
+
+```bash
 git clone https://github.com/momocat1102/agentic-me.git
 cd agentic-me
 
-# 執行安裝腳本 — 一次搞定所有依賴、memcp、hooks、MCP servers
+# 執行安裝腳本 — 安裝依賴、hooks、MCP servers
 bash scripts/setup.sh
 
 # 啟動（Server + Dashboard）
@@ -83,15 +94,13 @@ claude "執行 bash scripts/setup.sh 來設定系統，然後幫我配置 agents
 ### 安裝腳本做了什麼
 
 1. 安裝 Node.js 依賴並編譯 Server
-2. 複製並設定 [memcp](https://github.com/anthropics/memcp) — Claude Code 的持久化記憶系統
-3. 安裝 [OpenSpec](https://github.com/Fission-AI/OpenSpec) CLI — 結構化變更管理
-4. 配置 Claude Code hooks：
-   - **SessionStart** — 自動從 memcp 載入相關記憶
-   - **PreCompact** — Context 壓縮前提醒 Claude 保存知識
-   - **Stop** — 漸進式記憶提醒 + 進度回報
-5. 註冊 MCP servers（`~/.claude/mcp.json`）：memcp + central-command
-6. 設定工具權限（`~/.claude/settings.json`）
-7. 安裝 slash commands（`~/.claude/commands/`）：
+2. 安裝 [OpenSpec](https://github.com/Fission-AI/OpenSpec) CLI — 結構化變更管理
+3. 配置 Claude Code hooks：
+   - **SessionStart** — 從 Central Command 載入最近活動
+   - **Stop** — 進度回報提醒
+4. 註冊 MCP server（`~/.claude/mcp.json`）：central-command（與 memcp 並存）
+5. 設定工具權限（`~/.claude/settings.json`）
+6. 安裝 slash commands（`~/.claude/commands/`）：
    - `/kickoff` — 建立新專案，規劃路線圖
    - `/standup` — 每日站會：回顧進度、規劃工作
    - `/progress` — 查看與更新專案里程碑
@@ -100,21 +109,10 @@ claude "執行 bash scripts/setup.sh 來設定系統，然後幫我配置 agents
    - `/night-report` — 檢視夜班執行結果
    - `/init-spec` — 初始化 OpenSpec
    - `/opsx:sync` — 同步 OpenSpec 變更到 Dashboard
-8. 安裝 skills（`~/.claude/skills/`）：
-   - **記憶管理**：memcp-save、memcp-search、memcp-session-start
+7. 安裝 skills（`~/.claude/skills/`）：
    - **品質把關**：verification-before-completion、verification-loop、debug
    - **工作流**：subagent-driven-development、strategic-compact、search-first
    - **規劃**：brainstorming、writing-plans、when-stuck、finishing-a-development-branch
-
-### 選用：全域 CLAUDE.md
-
-複製範例設定來啟用全域記憶管理協議：
-
-```bash
-cp claude-config/CLAUDE.md ~/.claude/CLAUDE.md
-```
-
-這會教 Claude 如何有效使用 memcp（智慧去重、知識提取、scope 選擇）。
 
 ### 安裝完成後
 
@@ -210,7 +208,7 @@ agentic-me/
 ### 核心基礎設施
 - [Claude Code](https://github.com/anthropics/claude-code) — Anthropic 的 AI 程式開發 Agent
 - [Model Context Protocol (MCP)](https://github.com/modelcontextprotocol/sdk) — AI 工具整合協定
-- [memcp](https://github.com/anthropics/memcp) — Claude Code 的持久化記憶系統
+- [memcp](https://github.com/maydali28/memcp) — Claude Code 的持久化記憶系統
 - [OpenSpec](https://github.com/Fission-AI/OpenSpec) — Claude Code 的結構化變更管理工作流
 - [OpenClaw](https://github.com/danleetw/OpenClaw-bot-review) — OpenClaw 的可視化介面，用於 Claude Code
 

@@ -123,56 +123,17 @@ Subagent 定義在 `~/.claude/agents/`，用於大型自主任務的獨立派遣
 
 ## 四、記憶系統 (memcp)
 
-### 4.1 組成
+memcp 是 Claude Code 的持久化記憶系統，透過知識圖譜儲存跨 session 的決策、偏好和發現。
 
-| 項目 | 位置 |
-|------|------|
-| MCP Server | `~/.claude/mcp-servers/memcp/` (Claude Code native MCP) |
-| 資料庫 | `~/.memcp/graph.db` (SQLite 圖譜結構) |
-| 使用規則 | `~/.claude/CLAUDE.md` 中定義 |
+**獨立安裝：** memcp 現在有自己的安裝工具，請見 [memcp-pro](https://github.com/momocat1102/memcp-pro)。
 
-### 4.2 記憶工具
+安裝後包含：
+- **memcp MCP Server** — 圖譜式記憶存取（`~/.memcp/graph.db`）
+- **Hooks** — 自動載入記憶、壓縮前提醒、漸進式存檔提醒
+- **Skills** — `/memcp-save`、`/memcp-search`、`/memcp-session-start`
+- **記憶管理協議** — 智慧去重、scope 選擇、知識提取流程
 
-| 工具 | 用途 |
-|------|------|
-| `memcp_remember` | 存入新記憶 |
-| `memcp_recall` | 按查詢檢索記憶 |
-| `memcp_search` | 多層搜尋 (BM25 + 語義) |
-| `memcp_forget` | 刪除記憶 |
-| `memcp_related` | 圖譜關聯查詢 |
-| `memcp_reinforce` | 調整記憶權重 |
-| `memcp_consolidate` | 合併重複記憶 |
-| `memcp_load_context` | 存入大段內容 |
-| `memcp_retention_run` | 清理過期記憶 |
-
-### 4.3 記憶分類規則
-
-**Scope 選擇：**
-
-| Scope | 說明 | 範例 |
-|-------|------|------|
-| `global` | 跨專案通用 | 偏好 functional 寫法、回覆用繁體中文 |
-| `project` | 特定專案限定 | MACS 用 PyTorch、這個專案用 pnpm |
-
-判斷口訣：換到另一個專案這條記憶還有用嗎？有用 → global，沒用 → project
-
-**重要性等級：** `critical` > `high` > `medium` > `low`
-
-**分類：** `decision` / `fact` / `preference` / `finding` / `failure` / `lesson` / `pattern` / `todo` / `general`
-
-**Breadcrumb 三分類（源自 fire-flow 設計模式）：**
-- `failure`：失敗記錄（症狀 + 根因 + 解法 + 不要重試的條件）
-- `lesson`：成功經驗（做法 + 適用場景 + 為何有效）
-- `pattern`：跨專案可複用的模式（問題類型 + 解法模板）
-
-### 4.4 記憶的威力：越用越聰明
-
-```
-第 1 週：知道你是誰、在做什麼專案
-第 1 個月：了解你的工作習慣、技術偏好、寫作風格
-第 3 個月：掌握所有專案的歷史脈絡、關鍵決策、踩過的坑
-第 6 個月：成為真正理解你的 AI 助理，回覆精準度大幅提升
-```
+越用越聰明 — 隨著記憶累積，Claude 會更了解你的工作習慣、技術偏好和專案脈絡。
 
 ---
 
