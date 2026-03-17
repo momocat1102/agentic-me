@@ -1,3 +1,7 @@
+[繁體中文](README.zh-TW.md) | English
+
+[繁體中文](README.zh-TW.md) | English
+
 # Agentic Me — Personal AI Agent Collaboration System
 
 An extension for [Claude Code](https://github.com/anthropics/claude-code) that turns it into a multi-agent collaboration system. Manage, monitor, and coordinate multiple Claude Code agents through a central dashboard with real-time status tracking, task management, and a pixel-art virtual office.
