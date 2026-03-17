@@ -38,6 +38,7 @@ template.pptx
 ppt-gen-aiia.zip
 pixel-office-layout-*.json
 *.png
+!docs/pixel-office-preview.png
 
 # Claude Code (private config)
 .claude/
