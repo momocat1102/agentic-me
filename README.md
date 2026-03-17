@@ -91,6 +91,20 @@ claude "Run bash scripts/setup.sh to set up the system, then help me configure m
    - **Stop** — Progressive memory reminders + progress reporting
 5. Registers MCP servers (`~/.claude/mcp.json`): memcp + central-command
 6. Sets up tool permissions (`~/.claude/settings.json`)
+7. Installs slash commands (`~/.claude/commands/`):
+   - `/kickoff` — Create a new project with roadmap
+   - `/standup` — Daily standup: review progress, plan work
+   - `/progress` — View and update project milestones
+   - `/done` — End session: report progress + extract knowledge
+   - `/night-shift` — Background task automation
+   - `/night-report` — Review night shift results
+   - `/init-spec` — Initialize OpenSpec for a project
+   - `/opsx:sync` — Sync OpenSpec changes to Dashboard
+8. Installs skills (`~/.claude/skills/`):
+   - **Memory**: memcp-save, memcp-search, memcp-session-start
+   - **Quality**: verification-before-completion, verification-loop, debug
+   - **Workflow**: subagent-driven-development, strategic-compact, search-first
+   - **Planning**: brainstorming, writing-plans, when-stuck, finishing-a-development-branch
 
 ### Optional: Global CLAUDE.md
 

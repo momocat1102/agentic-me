@@ -385,7 +385,51 @@ cat > "$SETTINGS_FILE" << 'EOSETTINGS'
 EOSETTINGS
 ok "Settings configured"
 
-# ── 5d: Copy example agents.json ──
+# ── 5d: Install Commands (slash commands) ──
+info "Installing slash commands..."
+
+COMMANDS_SRC="$REPO_DIR/claude-config/commands"
+COMMANDS_DST="$CLAUDE_DIR/commands"
+mkdir -p "$COMMANDS_DST"
+
+if [ -d "$COMMANDS_SRC" ]; then
+  for cmd_file in "$COMMANDS_SRC"/*.md; do
+    cmd_name=$(basename "$cmd_file")
+    if [ ! -f "$COMMANDS_DST/$cmd_name" ]; then
+      cp "$cmd_file" "$COMMANDS_DST/$cmd_name"
+    else
+      info "  $cmd_name already exists, skipping (use --force to overwrite)"
+    fi
+  done
+  ok "Commands installed: $(ls "$COMMANDS_SRC"/*.md 2>/dev/null | xargs -I{} basename {} | tr '\n' ' ')"
+else
+  warn "No commands found in claude-config/commands/"
+fi
+
+# ── 5e: Install Skills ──
+info "Installing skills..."
+
+SKILLS_SRC="$REPO_DIR/claude-config/skills"
+SKILLS_DST="$CLAUDE_DIR/skills"
+mkdir -p "$SKILLS_DST"
+
+if [ -d "$SKILLS_SRC" ]; then
+  INSTALLED_SKILLS=""
+  for skill_dir in "$SKILLS_SRC"/*/; do
+    skill_name=$(basename "$skill_dir")
+    if [ ! -d "$SKILLS_DST/$skill_name" ]; then
+      cp -r "$skill_dir" "$SKILLS_DST/$skill_name"
+      INSTALLED_SKILLS="$INSTALLED_SKILLS $skill_name"
+    else
+      info "  $skill_name already exists, skipping"
+    fi
+  done
+  ok "Skills installed:$INSTALLED_SKILLS"
+else
+  warn "No skills found in claude-config/skills/"
+fi
+
+# ── 5f: Copy example agents.json ──
 if [ ! -f "$REPO_DIR/agents.json" ]; then
   cp "$REPO_DIR/agents.json.example" "$REPO_DIR/agents.json"
   ok "agents.json created from example — edit it to register your agents"
@@ -419,4 +463,6 @@ ${CYAN}Installed components:${NC}
   ✓ OpenSpec (change management workflow)
   ✓ Hooks (session start, pre-compact, stop, progress)
   ✓ MCP servers (memcp + central-command)
+  ✓ Commands (/done, /kickoff, /progress, /standup, /night-shift, etc.)
+  ✓ Skills (memcp, debug, verification, brainstorming, etc.)
 "

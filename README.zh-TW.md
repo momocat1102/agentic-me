@@ -90,6 +90,20 @@ claude "執行 bash scripts/setup.sh 來設定系統，然後幫我配置 agents
    - **Stop** — 漸進式記憶提醒 + 進度回報
 5. 註冊 MCP servers（`~/.claude/mcp.json`）：memcp + central-command
 6. 設定工具權限（`~/.claude/settings.json`）
+7. 安裝 slash commands（`~/.claude/commands/`）：
+   - `/kickoff` — 建立新專案，規劃路線圖
+   - `/standup` — 每日站會：回顧進度、規劃工作
+   - `/progress` — 查看與更新專案里程碑
+   - `/done` — 結束工作：回報進度 + 提取知識
+   - `/night-shift` — 背景任務自動化
+   - `/night-report` — 檢視夜班執行結果
+   - `/init-spec` — 初始化 OpenSpec
+   - `/opsx:sync` — 同步 OpenSpec 變更到 Dashboard
+8. 安裝 skills（`~/.claude/skills/`）：
+   - **記憶管理**：memcp-save、memcp-search、memcp-session-start
+   - **品質把關**：verification-before-completion、verification-loop、debug
+   - **工作流**：subagent-driven-development、strategic-compact、search-first
+   - **規劃**：brainstorming、writing-plans、when-stuck、finishing-a-development-branch
 
 ### 選用：全域 CLAUDE.md
 
