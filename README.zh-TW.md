@@ -56,23 +56,53 @@
 ### 前置需求
 
 - Node.js >= 22
+- Python 3.11+（memcp 需要）
 - Claude Code（`npm install -g @anthropic-ai/claude-code`）
 
-### 安裝與啟動
+### 一鍵安裝
 
 ```bash
 # 複製專案
 git clone https://github.com/momocat1102/agentic-me.git
 cd agentic-me
 
-# 安裝依賴
-npm install
+# 執行安裝腳本 — 一次搞定所有依賴、memcp、hooks、MCP servers
+bash scripts/setup.sh
 
 # 啟動（Server + Dashboard）
 ./start.sh
 ```
 
-啟動後：
+或者讓 Claude 幫你裝：
+```bash
+cd agentic-me
+claude "執行 bash scripts/setup.sh 來設定系統，然後幫我配置 agents"
+```
+
+### 安裝腳本做了什麼
+
+1. 安裝 Node.js 依賴並編譯 Server
+2. 複製並設定 [memcp](https://github.com/anthropics/memcp) — Claude Code 的持久化記憶系統
+3. 安裝 [OpenSpec](https://github.com/Fission-AI/OpenSpec) CLI — 結構化變更管理
+4. 配置 Claude Code hooks：
+   - **SessionStart** — 自動從 memcp 載入相關記憶
+   - **PreCompact** — Context 壓縮前提醒 Claude 保存知識
+   - **Stop** — 漸進式記憶提醒 + 進度回報
+5. 註冊 MCP servers（`~/.claude/mcp.json`）：memcp + central-command
+6. 設定工具權限（`~/.claude/settings.json`）
+
+### 選用：全域 CLAUDE.md
+
+複製範例設定來啟用全域記憶管理協議：
+
+```bash
+cp claude-config/CLAUDE.md ~/.claude/CLAUDE.md
+```
+
+這會教 Claude 如何有效使用 memcp（智慧去重、知識提取、scope 選擇）。
+
+### 安裝完成後
+
 - Dashboard：http://localhost:3000
 - Pixel Office：http://localhost:3000/pixel-office
 - Server API：http://localhost:4000/api

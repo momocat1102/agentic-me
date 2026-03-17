@@ -57,23 +57,53 @@ An extension for [Claude Code](https://github.com/anthropics/claude-code) that t
 ### Prerequisites
 
 - Node.js >= 22
+- Python 3.11+ (for memcp)
 - Claude Code (`npm install -g @anthropic-ai/claude-code`)
 
-### Install & Run
+### One-Click Setup
 
 ```bash
 # Clone
 git clone https://github.com/momocat1102/agentic-me.git
 cd agentic-me
 
-# Install dependencies
-npm install
+# Run setup — installs everything (dependencies, memcp, hooks, MCP servers)
+bash scripts/setup.sh
 
 # Start (Server + Dashboard)
 ./start.sh
 ```
 
-After startup:
+Or let Claude do it for you:
+```bash
+cd agentic-me
+claude "Run bash scripts/setup.sh to set up the system, then help me configure my agents"
+```
+
+### What the Setup Script Does
+
+1. Installs Node.js dependencies & builds the server
+2. Clones and configures [memcp](https://github.com/anthropics/memcp) — persistent memory for Claude Code
+3. Installs [OpenSpec](https://github.com/Fission-AI/OpenSpec) CLI — structured change management
+4. Configures Claude Code hooks:
+   - **SessionStart** — Auto-loads relevant memories from memcp
+   - **PreCompact** — Reminds Claude to save knowledge before context compaction
+   - **Stop** — Progressive memory reminders + progress reporting
+5. Registers MCP servers (`~/.claude/mcp.json`): memcp + central-command
+6. Sets up tool permissions (`~/.claude/settings.json`)
+
+### Optional: Global CLAUDE.md
+
+Copy the example config to enable memory management protocols globally:
+
+```bash
+cp claude-config/CLAUDE.md ~/.claude/CLAUDE.md
+```
+
+This teaches Claude how to use memcp effectively (smart dedup, knowledge extraction, scope selection).
+
+### After Setup
+
 - Dashboard: http://localhost:3000
 - Pixel Office: http://localhost:3000/pixel-office
 - Server API: http://localhost:4000/api
